@@ -109,6 +109,21 @@
   <ItemGroup>
     <Content Include="Global.asax" />
     <Content Include="Web.config" />
+    <Content Include="wwwroot\css\custom.css" />
+    <Content Include="wwwroot\css\materialize.min.css" />
+    <Content Include="wwwroot\images\no-image.png" />
+    <Content Include="wwwroot\js\app.js" />
+    <Content Include="wwwroot\js\custom.js" />
+    <Content Include="wwwroot\js\hogan-3.0.2.min.js" />
+    <Content Include="wwwroot\js\ImageTools.js" />
+    <Content Include="wwwroot\js\jquery-3.3.1.min.js" />
+    <Content Include="wwwroot\js\jquery-hashchange.js" />
+    <Content Include="wwwroot\js\materialize.min.js" />
+    <Content Include="wwwroot\pages\admin.htm" />
+    <Content Include="wwwroot\pages\adminunit.htm" />
+    <Content Include="wwwroot\pages\home.htm" />
+    <Content Include="wwwroot\pages\signin.htm" />
+    <Content Include="wwwroot\pages\signup.htm" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
@@ -133,6 +148,7 @@
     <None Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
+    <Content Include="wwwroot\js\jquery.hashchange.min.js_old" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
