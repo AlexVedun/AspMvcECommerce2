@@ -77,7 +77,7 @@ namespace AspMvcECommerce2.Domain.EntityController
         {
             //TODO Добавить обработку исключения:
             //Lay -> Lays
-            if (Regex.IsMatch(_name, "[A-z]{1,}[y]$"))
+            if (Regex.IsMatch(_name, "[A-z]{1,}[^eyuioa][y]$"))
             {
                 _name = _name.Remove(_name.Length - 1) + "ies";
             }
