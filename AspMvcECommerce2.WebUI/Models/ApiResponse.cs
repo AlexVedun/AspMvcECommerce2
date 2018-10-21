@@ -5,9 +5,9 @@ using System.Web;
 
 namespace AspMvcECommerce2.WebUI.Models
 {
-    public class TestModel
+    public class ApiResponse<T>
     {
-        public int id { get; set; }
-        public string name { get; set; }
+        public T data { get; set; }
+        public string error { get; set; }
     }
 }
