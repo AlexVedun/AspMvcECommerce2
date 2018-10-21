@@ -1,4 +1,5 @@
 ﻿using AspMvcECommerce2.Domain;
+using AspMvcECommerce2.WebUI.Models;
 using AspMvcECommerce2.Domain.EntityController;
 using System;
 using System.Collections.Generic;
@@ -16,13 +17,28 @@ namespace AspMvcECommerce2.WebUI.Controllers
             repository = new SqlServerRepository();
         }
         // GET: api/User
-        [Route("api/users")]
-        public IEnumerable<Object> Get()
+        [Route("api/users/get-all")]
+        public ApiResponse <List<User>> Get()
         {
-            //repository.UserEC.Users.ToList();
-            //return new List<User>() { new User()};
-            return repository.UserEC.Users.Select(u => new { id = u.id, name = u.login  }).ToList();
+            ApiResponse<List<User>> usersResponse = new ApiResponse<List<User>>();
+            List<User> users = null;
+            try
+            {
+                users = repository.UserEC.Users.ToList();
+                usersResponse.data = users;
+            }
+            catch (Exception ex)
+            {
+                usersResponse.error = ex.Message;
+            }
+            return usersResponse;
         }
+        //public IEnumerable<Object> Get()
+        //{
+        //    //repository.UserEC.Users.ToList();
+        //    //return new List<User>() { new User()};
+        //    return repository.UserEC.Users.Select(u => new { id = u.id, name = u.login  }).ToList();
+        //}
 
         // GET: api/User/5
         public string Get(int id)

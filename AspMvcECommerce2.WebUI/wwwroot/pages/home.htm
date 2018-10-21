@@ -1,6 +1,7 @@
 ﻿<div id="articles-grid">
     Home
     <div id="categories-list"></div>
+    <div id="users-list"></div>
     <!--<div class="row">
         <div class="col s1 valign-wrapper">
             <ul id="slide-out" class="sidenav">
@@ -68,13 +69,12 @@
         //var $cartHref = $('#cart');
         return function (param) {
 
-            console.log("f2");
             var populateCategoriesFilter = function () {
 
                 //Добавляем полосу бесконечного прогресса -
                 //пока будет ожидаться ответ сервера
                 preloaderShow();
-                console.log(populateCategoriesFilter);
+                //console.log(populateCategoriesFilter);
                 $.ajax({
                     url: '/api/categories/get-all',
                     type: "GET",
@@ -111,7 +111,50 @@
 
             }
 
+            var populateUsersFilter = function () {
+
+                //Добавляем полосу бесконечного прогресса -
+                //пока будет ожидаться ответ сервера
+                preloaderShow();
+                //console.log(populateCategoriesFilter);
+                $.ajax({
+                    url: 'api/users/get-all',
+                    type: "GET",
+                    cache: false
+                }).done(function (resp) {
+
+                    if (resp != undefined) {
+                        if (resp.error != undefined && resp.error != "") {
+                            alert("error: " + resp.error);
+                        } else {
+                            /*Заполняем шаблон данными и помещаем на веб-страницу*/
+
+                            //1 - prepare template
+                            var template = Hogan.compile(
+                                '<ul>'
+                                + '{{#data}}'
+                                + '<li>{{id}} - {{login}} - {{password}}</li>'
+                                + '{{/data}}'
+                                + '</ul>'
+                            );
+                            //2 - fill in template (rendering)
+                            var filledTemplate = template.render(resp);
+                            //3 find node n fill in from rendered template
+                            $('#users-list').html(filledTemplate);
+                        }
+                    }
+                }).fail(function (jqXHR, textStatus, errorThrown) {
+
+                    alert("Ошибка: " + jqXHR);
+                }).always(function () {
+
+                    preloaderHide();
+                });
+
+            }
+
             populateCategoriesFilter();
+            populateUsersFilter();
                 //console.log(param);
                 /*if (param == 'out') {
     
@@ -443,6 +486,6 @@
                 $cartHref.click(showCart);*/
 
                 setTimeout(preloaderHide, 500);
-            };
+        };
     });
 </script>
