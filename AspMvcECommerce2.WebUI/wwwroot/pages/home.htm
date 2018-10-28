@@ -68,6 +68,27 @@
         //var $cartHref = $('#cart');
         return function (param) {
 
+            if (param === 'out') {
+
+                $.ajax({
+                    url: "/api/auth/signout"
+                    , type: 'POST'
+                }).done(function (resp) {
+
+                    if (resp.error !== undefined && resp.error !== null && resp.error !== "") {
+
+                        alert("error: " + resp.error);
+                    } else {
+
+                        onSignOut();
+                        window.location = "/#!home";
+                    }
+                }).fail(function (xhr, status, text) {
+
+                    alert("error: " + text);
+                });
+            }
+
             console.log("f2");
             var populateCategoriesFilter = function () {
 

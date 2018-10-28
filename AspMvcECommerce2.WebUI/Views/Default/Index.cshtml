@@ -59,7 +59,7 @@
 
     <nav>
         <div class="nav-wrapper">
-            <a href="#!" class="brand-logo">Logo</a>
+            <a href="#!home" class="brand-logo">Logo</a>
             <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
             <ul class="right hide-on-med-and-down">
                 <li><a href="#!home">Home</a></li>
@@ -82,11 +82,12 @@
     <!--Почему использована комбинация #! вместо #
         https://netpeak.net/ru/blog/kak-optimizirovat-spa-sayty/
     -->
-    @*<section id="home" class="active" data-src='@Url.Content("/api/auth/page?pagename=home&param=no")'></section>*@
-    <section id="home" class="active" data-src='@Url.Content("~/wwwroot/pages/home.htm")'></section>
+    <section id="home" class="active" data-src='@Url.Content("/api/auth/page?pagename=home&param=no")'></section>
+    @*<section id="home" class="active" data-src='@Url.Content("~/wwwroot/pages/home.htm")'></section>*@
     <section id="signup" data-src='@Url.Content("/api/auth/page?pagename=signup&param=no")'></section>
-    @*<section id="signin" data-src='@Url.Content("/api/auth/page?pagename=signin&param=no")'></section>*@
-    <section id="signin" data-src='@Url.Content("~/wwwroot/pages/signin.htm")'></section>
+    @*<section id="signup" data-src='@Url.Content("~/wwwroot/pages/signup.htm")'></section>*@
+    <section id="signin" data-src='@Url.Content("/api/auth/page?pagename=signin&param=no")'></section>
+    @*<section id="signin" data-src='@Url.Content("~/wwwroot/pages/signin.htm")'></section>*@
     <section id="admin" data-src='@Url.Content("/api/auth/page?pagename=admin&param=no")'></section>
     <section id="adminunit" data-src='@Url.Content("/api/auth/page?pagename=adminunit&param=no")'></section>
 
@@ -98,4 +99,4 @@
     <script src="~/wwwroot/js/app.js"></script>
     <script src="~/wwwroot/js/custom.js"></script>
 </body>
-</html>
+        </html>

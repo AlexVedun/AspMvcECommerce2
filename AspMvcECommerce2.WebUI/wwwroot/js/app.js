@@ -58,7 +58,6 @@
     //
     function onhashchange() {
 
-        
         var hash = location.hash || "#!home";
         //console.log(hash);
         var re = /#!([-0-9A-Za-z]+)(\:(.+))?/;
