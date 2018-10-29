@@ -1,6 +1,6 @@
 ﻿<div class="container">
     <div class="row">
-        <div class="col s12">
+        <div class="col s12 xl6">
             <div class="card grey lighten-2">
                 <div class="card-content">
                     <span class="card-title">Sign up</span>
@@ -37,30 +37,30 @@
         //console.log(preloaderHide);
         return function (param) {
 
-            $('#signup-form').unbind("click");
+            $('#signup-form').unbind("submit");
             $('#signup-form').submit(function (ev) {
 
                 ev.preventDefault();
                 var formData = $(this).serialize();
                 //console.log(formData);
                 $.ajax({
-                    url: "/api/auth?action=signup"
+                    url: "/api/auth/signup"
                     , data: formData
-                    , type: 'GET'
+                    , type: 'POST'
                 }).done(function (resp) {
 
-                    if (resp.error != "") {
+                    if (resp.error !== undefined && resp.error !== null && resp.error !== "") {
 
                         alert("error: " + resp.error);
                     } else {
 
-                        alert("Your data is: " + resp.data[0].login + "; " + resp.data[0].password);
+                        alert("Your data is: " + resp.data.login + "; " + resp.data.password);
                         $("#signup-form")[0].reset();
                     }
-                }).fail(function () {
+                    }).fail(function (xhr, status, text) {
 
-                    alert("error");
-                });
+                        alert("error: " + text);
+                    });
             });
             setTimeout(preloaderHide, 500);
         };
