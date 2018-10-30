@@ -13,15 +13,15 @@ namespace AspMvcECommerce2.WebUI.Controllers
     public class CategoryController : ApiController
     {
         private IRepository repository;
-        /*public CategoryController(IRepository _repository)
+        public CategoryController(IRepository _repository)
         {
             repository = _repository;
-        }*/
-
-        public CategoryController()
-        {
-            repository = new SqlServerRepository();
         }
+
+        //public CategoryController()
+        //{
+        //    repository = new SqlServerRepository();
+        //}
 
         // GET: api/Category
         [Route("api/categories/get-all")]

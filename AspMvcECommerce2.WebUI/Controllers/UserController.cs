@@ -13,9 +13,15 @@ namespace AspMvcECommerce2.WebUI.Controllers
     public class UserController : ApiController
     {
         private IRepository repository;
-        public UserController() {
-            repository = new SqlServerRepository();
+        //public UserController() {
+        //    repository = new SqlServerRepository();
+        //}
+
+        public UserController(IRepository _repository)
+        {
+            repository = _repository;
         }
+
         // GET: api/User
         [Route("api/users/get-all")]
         public ApiResponse <List<User>> Get()

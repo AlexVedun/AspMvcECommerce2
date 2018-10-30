@@ -23,7 +23,6 @@ namespace AspMvcECommerce2.Domain
     
         public int id { get; set; }
         public string name { get; set; }
-
         [JsonIgnore]
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Article> Articles { get; set; }

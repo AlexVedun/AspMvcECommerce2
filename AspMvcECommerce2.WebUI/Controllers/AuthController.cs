@@ -14,9 +14,14 @@ namespace AspMvcECommerce2.WebUI.Controllers
     {
         public const int userRoleId = 2;
         private IRepository mRepository;
-        public AuthController()
+        //public AuthController()
+        //{
+        //    mRepository = new SqlServerRepository();
+        //}
+
+        public AuthController(IRepository _repository)
         {
-            mRepository = new SqlServerRepository();
+            mRepository = _repository;
         }
 
         // GET: api/Auth

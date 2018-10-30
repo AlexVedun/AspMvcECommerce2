@@ -4,182 +4,181 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="Хранилище AspNetMvcECommerceModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
-        <EntityType Name="Article_details">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="article_id" Type="int" />
-          <Property Name="color_id" Type="int" />
-          <Property Name="size_id" Type="int" />
-          <Property Name="brand_id" Type="int" />
-        </EntityType>
-        <EntityType Name="Articles">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="title" Type="nvarchar" MaxLength="25" Nullable="false" />
-          <Property Name="description" Type="nvarchar" MaxLength="25" Nullable="false" />
-          <Property Name="image_url" Type="nvarchar" MaxLength="225" />
-          <Property Name="image_base64" Type="varchar(max)" />
-          <Property Name="category_id" Type="int" />
-          <Property Name="price" Type="decimal" Precision="10" Scale="2" Nullable="false" />
-          <Property Name="quantity" Type="int" Nullable="false" />
-        </EntityType>
-        <EntityType Name="Brand">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="name" Type="nvarchar" MaxLength="25" Nullable="false" />
-        </EntityType>
-        <EntityType Name="Categories">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="name" Type="nvarchar" MaxLength="25" Nullable="false" />
-        </EntityType>
-        <EntityType Name="Colors">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="name" Type="nvarchar" MaxLength="25" Nullable="false" />
-        </EntityType>
-        <EntityType Name="Roles">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="name" Type="nvarchar" MaxLength="25" Nullable="false" />
-        </EntityType>
-        <EntityType Name="Sizes">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="name" Type="nvarchar" MaxLength="25" Nullable="false" />
-        </EntityType>
-        <EntityType Name="Users">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="login" Type="nvarchar" MaxLength="25" Nullable="false" />
-          <Property Name="password" Type="nvarchar" MaxLength="225" Nullable="false" />
-          <Property Name="role_id" Type="int" />
-        </EntityType>
-        <Association Name="FK__Article_d__artic__30F848ED">
-          <End Role="Articles" Type="Self.Articles" Multiplicity="0..1" />
-          <End Role="Article_details" Type="Self.Article_details" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Articles">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="Article_details">
-              <PropertyRef Name="article_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__Article_d__brand__31EC6D26">
-          <End Role="Brand" Type="Self.Brand" Multiplicity="0..1" />
-          <End Role="Article_details" Type="Self.Article_details" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Brand">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="Article_details">
-              <PropertyRef Name="brand_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__Article_d__color__32E0915F">
-          <End Role="Colors" Type="Self.Colors" Multiplicity="0..1" />
-          <End Role="Article_details" Type="Self.Article_details" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Colors">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="Article_details">
-              <PropertyRef Name="color_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__Article_d__size___33D4B598">
-          <End Role="Sizes" Type="Self.Sizes" Multiplicity="0..1" />
-          <End Role="Article_details" Type="Self.Article_details" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Sizes">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="Article_details">
-              <PropertyRef Name="size_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__Articles__catego__34C8D9D1">
-          <End Role="Categories" Type="Self.Categories" Multiplicity="0..1" />
-          <End Role="Articles" Type="Self.Articles" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Categories">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="Articles">
-              <PropertyRef Name="category_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__Users__role_id__35BCFE0A">
-          <End Role="Roles" Type="Self.Roles" Multiplicity="0..1" />
-          <End Role="Users" Type="Self.Users" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Roles">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="Users">
-              <PropertyRef Name="role_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <EntityContainer Name="Хранилище AspNetMvcECommerceModelContainer">
-          <EntitySet Name="Article_details" EntityType="Self.Article_details" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Articles" EntityType="Self.Articles" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Brand" EntityType="Self.Brand" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Categories" EntityType="Self.Categories" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Colors" EntityType="Self.Colors" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Roles" EntityType="Self.Roles" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Sizes" EntityType="Self.Sizes" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
-          <AssociationSet Name="FK__Article_d__artic__30F848ED" Association="Self.FK__Article_d__artic__30F848ED">
-            <End Role="Articles" EntitySet="Articles" />
-            <End Role="Article_details" EntitySet="Article_details" />
-          </AssociationSet>
-          <AssociationSet Name="FK__Article_d__brand__31EC6D26" Association="Self.FK__Article_d__brand__31EC6D26">
-            <End Role="Brand" EntitySet="Brand" />
-            <End Role="Article_details" EntitySet="Article_details" />
-          </AssociationSet>
-          <AssociationSet Name="FK__Article_d__color__32E0915F" Association="Self.FK__Article_d__color__32E0915F">
-            <End Role="Colors" EntitySet="Colors" />
-            <End Role="Article_details" EntitySet="Article_details" />
-          </AssociationSet>
-          <AssociationSet Name="FK__Article_d__size___33D4B598" Association="Self.FK__Article_d__size___33D4B598">
-            <End Role="Sizes" EntitySet="Sizes" />
-            <End Role="Article_details" EntitySet="Article_details" />
-          </AssociationSet>
-          <AssociationSet Name="FK__Articles__catego__34C8D9D1" Association="Self.FK__Articles__catego__34C8D9D1">
-            <End Role="Categories" EntitySet="Categories" />
-            <End Role="Articles" EntitySet="Articles" />
-          </AssociationSet>
-          <AssociationSet Name="FK__Users__role_id__35BCFE0A" Association="Self.FK__Users__role_id__35BCFE0A">
-            <End Role="Roles" EntitySet="Roles" />
-            <End Role="Users" EntitySet="Users" />
-          </AssociationSet>
-        </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+    <Schema Namespace="AspNetMvcECommerceModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2012" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityContainer Name="AspNetMvcECommerceModelStoreContainer">
+    <EntitySet Name="Article_details" EntityType="AspNetMvcECommerceModel.Store.Article_details" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Articles" EntityType="AspNetMvcECommerceModel.Store.Articles" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Brands" EntityType="AspNetMvcECommerceModel.Store.Brands" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Categories" EntityType="AspNetMvcECommerceModel.Store.Categories" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Colors" EntityType="AspNetMvcECommerceModel.Store.Colors" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Roles" EntityType="AspNetMvcECommerceModel.Store.Roles" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Sizes" EntityType="AspNetMvcECommerceModel.Store.Sizes" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Users" EntityType="AspNetMvcECommerceModel.Store.Users" store:Type="Tables" Schema="dbo" />
+    <AssociationSet Name="FK__Article_d__artic__30F848ED" Association="AspNetMvcECommerceModel.Store.FK__Article_d__artic__30F848ED">
+      <End Role="Articles" EntitySet="Articles" />
+      <End Role="Article_details" EntitySet="Article_details" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Article_d__brand__31EC6D26" Association="AspNetMvcECommerceModel.Store.FK__Article_d__brand__31EC6D26">
+      <End Role="Brand" EntitySet="Brands" />
+      <End Role="Article_details" EntitySet="Article_details" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Article_d__color__32E0915F" Association="AspNetMvcECommerceModel.Store.FK__Article_d__color__32E0915F">
+      <End Role="Colors" EntitySet="Colors" />
+      <End Role="Article_details" EntitySet="Article_details" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Article_d__size___33D4B598" Association="AspNetMvcECommerceModel.Store.FK__Article_d__size___33D4B598">
+      <End Role="Sizes" EntitySet="Sizes" />
+      <End Role="Article_details" EntitySet="Article_details" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Articles__catego__34C8D9D1" Association="AspNetMvcECommerceModel.Store.FK__Articles__catego__34C8D9D1">
+      <End Role="Categories" EntitySet="Categories" />
+      <End Role="Articles" EntitySet="Articles" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Users__role_id__35BCFE0A" Association="AspNetMvcECommerceModel.Store.FK__Users__role_id__35BCFE0A">
+      <End Role="Roles" EntitySet="Roles" />
+      <End Role="Users" EntitySet="Users" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="Article_details">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="article_id" Type="int" Nullable="true" />
+    <Property Name="color_id" Type="int" Nullable="true" />
+    <Property Name="size_id" Type="int" Nullable="true" />
+    <Property Name="brand_id" Type="int" Nullable="true" />
+  </EntityType>
+  <EntityType Name="Articles">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="title" Type="nvarchar" Nullable="false" MaxLength="25" />
+    <Property Name="description" Type="nvarchar" Nullable="false" MaxLength="25" />
+    <Property Name="image_url" Type="nvarchar" Nullable="true" MaxLength="225" />
+    <Property Name="image_base64" Type="varchar(max)" Nullable="true" />
+    <Property Name="category_id" Type="int" Nullable="true" />
+    <Property Name="price" Type="decimal" Nullable="false" Precision="10" Scale="2" />
+    <Property Name="quantity" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Brands">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="name" Type="nvarchar" Nullable="false" MaxLength="25" />
+  </EntityType>
+  <EntityType Name="Categories">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="name" Type="nvarchar" Nullable="false" MaxLength="25" />
+  </EntityType>
+  <EntityType Name="Colors">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="name" Type="nvarchar" Nullable="false" MaxLength="25" />
+  </EntityType>
+  <EntityType Name="Roles">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="name" Type="nvarchar" Nullable="false" MaxLength="25" />
+  </EntityType>
+  <EntityType Name="Sizes">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="name" Type="nvarchar" Nullable="false" MaxLength="25" />
+  </EntityType>
+  <EntityType Name="Users">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="login" Type="nvarchar" Nullable="false" MaxLength="25" />
+    <Property Name="password" Type="nvarchar" Nullable="false" MaxLength="225" />
+    <Property Name="role_id" Type="int" Nullable="true" />
+  </EntityType>
+  <Association Name="FK__Article_d__artic__30F848ED">
+    <End Role="Articles" Type="AspNetMvcECommerceModel.Store.Articles" Multiplicity="0..1" />
+    <End Role="Article_details" Type="AspNetMvcECommerceModel.Store.Article_details" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Articles">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="Article_details">
+        <PropertyRef Name="article_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Article_d__brand__31EC6D26">
+    <End Role="Brand" Type="AspNetMvcECommerceModel.Store.Brands" Multiplicity="0..1" />
+    <End Role="Article_details" Type="AspNetMvcECommerceModel.Store.Article_details" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Brand">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="Article_details">
+        <PropertyRef Name="brand_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Article_d__color__32E0915F">
+    <End Role="Colors" Type="AspNetMvcECommerceModel.Store.Colors" Multiplicity="0..1" />
+    <End Role="Article_details" Type="AspNetMvcECommerceModel.Store.Article_details" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Colors">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="Article_details">
+        <PropertyRef Name="color_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Article_d__size___33D4B598">
+    <End Role="Sizes" Type="AspNetMvcECommerceModel.Store.Sizes" Multiplicity="0..1" />
+    <End Role="Article_details" Type="AspNetMvcECommerceModel.Store.Article_details" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Sizes">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="Article_details">
+        <PropertyRef Name="size_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Articles__catego__34C8D9D1">
+    <End Role="Categories" Type="AspNetMvcECommerceModel.Store.Categories" Multiplicity="0..1" />
+    <End Role="Articles" Type="AspNetMvcECommerceModel.Store.Articles" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Categories">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="Articles">
+        <PropertyRef Name="category_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Users__role_id__35BCFE0A">
+    <End Role="Roles" Type="AspNetMvcECommerceModel.Store.Roles" Multiplicity="0..1" />
+    <End Role="Users" Type="AspNetMvcECommerceModel.Store.Users" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Roles">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="Users">
+        <PropertyRef Name="role_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="AspNetMvcECommerceModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -372,86 +371,85 @@
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
-      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="Хранилище AspNetMvcECommerceModelContainer" CdmEntityContainer="AspNetMvcECommerceEntities">
-          <EntitySetMapping Name="Article_details">
-            <EntityTypeMapping TypeName="AspNetMvcECommerceModel.Article_details">
-              <MappingFragment StoreEntitySet="Article_details">
-                <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="article_id" ColumnName="article_id" />
-                <ScalarProperty Name="color_id" ColumnName="color_id" />
-                <ScalarProperty Name="size_id" ColumnName="size_id" />
-                <ScalarProperty Name="brand_id" ColumnName="brand_id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Articles">
-            <EntityTypeMapping TypeName="AspNetMvcECommerceModel.Article">
-              <MappingFragment StoreEntitySet="Articles">
-                <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="title" ColumnName="title" />
-                <ScalarProperty Name="description" ColumnName="description" />
-                <ScalarProperty Name="image_url" ColumnName="image_url" />
-                <ScalarProperty Name="image_base64" ColumnName="image_base64" />
-                <ScalarProperty Name="category_id" ColumnName="category_id" />
-                <ScalarProperty Name="price" ColumnName="price" />
-                <ScalarProperty Name="quantity" ColumnName="quantity" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Brands">
-            <EntityTypeMapping TypeName="AspNetMvcECommerceModel.Brand">
-              <MappingFragment StoreEntitySet="Brand">
-                <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="name" ColumnName="name" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Categories">
-            <EntityTypeMapping TypeName="AspNetMvcECommerceModel.Category">
-              <MappingFragment StoreEntitySet="Categories">
-                <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="name" ColumnName="name" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Colors">
-            <EntityTypeMapping TypeName="AspNetMvcECommerceModel.Color">
-              <MappingFragment StoreEntitySet="Colors">
-                <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="name" ColumnName="name" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Roles">
-            <EntityTypeMapping TypeName="AspNetMvcECommerceModel.Role">
-              <MappingFragment StoreEntitySet="Roles">
-                <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="name" ColumnName="name" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Sizes">
-            <EntityTypeMapping TypeName="AspNetMvcECommerceModel.Size">
-              <MappingFragment StoreEntitySet="Sizes">
-                <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="name" ColumnName="name" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Users">
-            <EntityTypeMapping TypeName="AspNetMvcECommerceModel.User">
-              <MappingFragment StoreEntitySet="Users">
-                <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="login" ColumnName="login" />
-                <ScalarProperty Name="password" ColumnName="password" />
-                <ScalarProperty Name="role_id" ColumnName="role_id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-        </EntityContainerMapping>
-      </Mapping>
-    </edmx:Mappings>
+    <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="AspNetMvcECommerceModelStoreContainer" CdmEntityContainer="AspNetMvcECommerceEntities">
+    <EntitySetMapping Name="Article_details">
+      <EntityTypeMapping TypeName="IsTypeOf(AspNetMvcECommerceModel.Article_details)">
+        <MappingFragment StoreEntitySet="Article_details">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="article_id" ColumnName="article_id" />
+          <ScalarProperty Name="color_id" ColumnName="color_id" />
+          <ScalarProperty Name="size_id" ColumnName="size_id" />
+          <ScalarProperty Name="brand_id" ColumnName="brand_id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Articles">
+      <EntityTypeMapping TypeName="IsTypeOf(AspNetMvcECommerceModel.Article)">
+        <MappingFragment StoreEntitySet="Articles">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="title" ColumnName="title" />
+          <ScalarProperty Name="description" ColumnName="description" />
+          <ScalarProperty Name="image_url" ColumnName="image_url" />
+          <ScalarProperty Name="image_base64" ColumnName="image_base64" />
+          <ScalarProperty Name="category_id" ColumnName="category_id" />
+          <ScalarProperty Name="price" ColumnName="price" />
+          <ScalarProperty Name="quantity" ColumnName="quantity" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Brands">
+      <EntityTypeMapping TypeName="IsTypeOf(AspNetMvcECommerceModel.Brand)">
+        <MappingFragment StoreEntitySet="Brands">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="name" ColumnName="name" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Categories">
+      <EntityTypeMapping TypeName="IsTypeOf(AspNetMvcECommerceModel.Category)">
+        <MappingFragment StoreEntitySet="Categories">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="name" ColumnName="name" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Colors">
+      <EntityTypeMapping TypeName="IsTypeOf(AspNetMvcECommerceModel.Color)">
+        <MappingFragment StoreEntitySet="Colors">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="name" ColumnName="name" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Roles">
+      <EntityTypeMapping TypeName="IsTypeOf(AspNetMvcECommerceModel.Role)">
+        <MappingFragment StoreEntitySet="Roles">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="name" ColumnName="name" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Sizes">
+      <EntityTypeMapping TypeName="IsTypeOf(AspNetMvcECommerceModel.Size)">
+        <MappingFragment StoreEntitySet="Sizes">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="name" ColumnName="name" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Users">
+      <EntityTypeMapping TypeName="IsTypeOf(AspNetMvcECommerceModel.User)">
+        <MappingFragment StoreEntitySet="Users">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="login" ColumnName="login" />
+          <ScalarProperty Name="password" ColumnName="password" />
+          <ScalarProperty Name="role_id" ColumnName="role_id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping></edmx:Mappings>
   </edmx:Runtime>
   <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
   <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
@@ -465,7 +463,7 @@
         <DesignerProperty Name="ValidateOnBuild" Value="true" />
         <DesignerProperty Name="EnablePluralization" Value="true" />
         <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
-        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="UseLegacyProvider" Value="False" />
         <DesignerProperty Name="CodeGenerationStrategy" Value="Нет" />
       </DesignerInfoPropertySet>
     </Options>
