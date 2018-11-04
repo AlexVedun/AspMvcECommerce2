@@ -2,9 +2,11 @@
 using AspMvcECommerce2.WebUI.Models;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Web;
 using System.Web.Http;
 
@@ -14,9 +16,13 @@ namespace AspMvcECommerce2.WebUI.Controllers
     {
         public const int userRoleId = 2;
         private IRepository mRepository;
-        public AuthController()
+        /*public AuthController()
         {
             mRepository = new SqlServerRepository();
+        }*/
+        public AuthController(IRepository repository)
+        {
+            mRepository = repository;
         }
 
         // GET: api/Auth
@@ -121,35 +127,45 @@ namespace AspMvcECommerce2.WebUI.Controllers
                         mRepository.UserEC.FindByLogin(HttpContext.Current.Session["username"].ToString());
                     if (user.Role.name == "admin")
                     {
-                        var response = Request.CreateResponse(HttpStatusCode.Moved);
+                        /*var response = Request.CreateResponse(HttpStatusCode.Moved);
                         //TODO
                         response.Headers.Location =
                             new Uri(Url.Content("~/wwwroot/pages/" + _navigationData.pagename + ".htm?" + _navigationData.param));
-                        return response;
+                        return response;*/
+                        return GetHTMLPageText(AppDomain.CurrentDomain.BaseDirectory + "\\wwwroot\\pages\\" + _navigationData.pagename + ".htm", _navigationData.param);
                     }
                     else
                     {
-                        var response = Request.CreateResponse(HttpStatusCode.Moved);
+                        /*var response = Request.CreateResponse(HttpStatusCode.Moved);
                         response.Headers.Location =
                             new Uri(Url.Content("~/wwwroot/pages/home.htm?" + _navigationData.param));
-                        return response;
+                        return response;*/
+                        return GetHTMLErrorPageText("Sign in as admin");
                     }
                 }
                 else
                 {
-                    var response = Request.CreateResponse(HttpStatusCode.Moved);
+                    /*var response = Request.CreateResponse(HttpStatusCode.Moved);
                     response.Headers.Location =
                         new Uri(Url.Content("~/wwwroot/pages/home.htm?" + _navigationData.param));
-                    return response;
+                    return response;*/
+                    return GetHTMLErrorPageText("Sign in first");
                 }
             }
             else
             {
-                var response = Request.CreateResponse(HttpStatusCode.Moved);
+                /*var response = Request.CreateResponse(HttpStatusCode.Moved);
                 response.Headers.Location =
                     new Uri(Url.Content("~/wwwroot/pages/" + _navigationData.pagename + ".htm?" + _navigationData.param));
-                return response;
+                return response;*/
+                return GetHTMLPageText(AppDomain.CurrentDomain.BaseDirectory + "\\wwwroot\\pages\\" + _navigationData.pagename + ".htm", _navigationData.param);
             }
+        }
+
+        [Route("api/auth/checkauth")]
+        public Object Get(bool b = true)
+        {
+            return HttpContext.Current.Session["username"];
         }
 
         // PUT: api/Auth/5
@@ -160,6 +176,34 @@ namespace AspMvcECommerce2.WebUI.Controllers
         // DELETE: api/Auth/5
         public void Delete(int id)
         {
+        }
+
+        private Object GetHTMLPageText(string _pageUri, string _param)
+        {
+            var response = new HttpResponseMessage();
+            string page = "";
+            using (StreamReader reader = new StreamReader(_pageUri))
+            {
+                page = reader.ReadToEnd();
+                page = page.Replace("param", _param);
+            }
+            response.Content = new StringContent(page);
+            response.Content.Headers.ContentType = new MediaTypeHeaderValue("text/html");
+            return response;
+        }
+
+        private Object GetHTMLErrorPageText(string _messageText)
+        {
+            var response = new HttpResponseMessage();
+            string page = "";
+            using (StreamReader reader = new StreamReader(AppDomain.CurrentDomain.BaseDirectory + "\\wwwroot\\pages\\error.htm"))
+            {
+                page = reader.ReadToEnd();
+                page = page.Replace("{{error-text}}", _messageText);
+            }
+            response.Content = new StringContent(page);
+            response.Content.Headers.ContentType = new MediaTypeHeaderValue("text/html");
+            return response;
         }
     }
 }

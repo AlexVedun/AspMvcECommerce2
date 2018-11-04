@@ -6,21 +6,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Web;
 using System.Web.Http;
 
 namespace AspMvcECommerce2.WebUI.Controllers
 {
     public class CategoryController : ApiController
     {
-        private IRepository repository;
-        /*public CategoryController(IRepository _repository)
+        private IRepository mRepository;
+        public CategoryController(IRepository _repository)
         {
-            repository = _repository;
-        }*/
-
-        public CategoryController()
-        {
-            repository = new SqlServerRepository();
+            mRepository = _repository;
         }
 
         // GET: api/Category
@@ -28,23 +24,15 @@ namespace AspMvcECommerce2.WebUI.Controllers
         //public IEnumerable<TestModel> Get()
         public ApiResponse<List<Category>> Get()
         {
-            //return new string[] { "value1", "value2" };
-            /*IEnumerable<TestModel> testModels = new List<TestModel>() {
-                new TestModel{id = 1, name = "n1"}
-                , new TestModel{id = 2, name = "n2"}
-            };*/
-            //return testModels;
+            
             ApiResponse<List<Category>> categoriesResponse =
                 new ApiResponse<List<Category>>();
             List<Category> categories = null;
             try
             {
                 categories =
-                    repository.CategoryEC.Categories.ToList();
-                /*categories =
-                    new List<Category>() {
-                        new Category() { id = 1, name = "n1" }
-                    };*/
+                    mRepository.CategoryEC.Categories.ToList();
+                
                 categoriesResponse.data = categories;
             }
             catch (Exception ex)
@@ -55,13 +43,81 @@ namespace AspMvcECommerce2.WebUI.Controllers
             return categoriesResponse;
         }
 
-        // GET: api/Category/5
-        /*[Route("api/categories/{_id}")]
-        public TestModel Get(int _id)
+        [Route("api/categories/add")]
+        public Object Get(string catname)
         {
-            //return "value = " + id;
-            return new TestModel { id = _id, name = "n" + _id };
-        }*/
+            try
+            {
+                if (HttpContext.Current.Session["username"] != null)
+                {
+                    User user =
+                        mRepository.UserEC.FindByLogin(HttpContext.Current.Session["username"].ToString());
+                    if (user.Role.name == "admin")
+                    {
+                        Category category = new Category() { name = catname, Articles = new List<Article>() };
+                        mRepository.CategoryEC.Save(category);
+                        return new ApiResponse<Object>() { data = new List<Category>() { category }, error = "" };
+                    }
+                    else
+                    {
+                        var response = Request.CreateResponse(HttpStatusCode.Moved);
+                        response.Headers.Location =
+                            new Uri(Url.Content("~/wwwroot/pages/home.htm"));
+                        return response;
+                    }
+                }
+                else
+                {
+                    var response = Request.CreateResponse(HttpStatusCode.Moved);
+                    response.Headers.Location =
+                        new Uri(Url.Content("~/wwwroot/pages/home.htm"));
+                    return response;
+                }
+            }
+            catch (Exception ex)
+            {
+
+                return new ApiResponse<Object>() { data = null, error = ex.Message + " : " + ex.StackTrace };
+            }
+        }
+
+        [Route("api/categories/delete")]
+        public Object Get(int catid)
+        {
+            try
+            {
+                if (HttpContext.Current.Session["username"] != null)
+                {
+                    User user =
+                        mRepository.UserEC.FindByLogin(HttpContext.Current.Session["username"].ToString());
+                    if (user.Role.name == "admin")
+                    {
+                        Category category = mRepository.CategoryEC.Find(catid);
+                        mRepository.CategoryEC.Remove(category);
+                        return new ApiResponse<Object>() { data = new List<Category>() { category }, error = "" };
+                    }
+                    else
+                    {
+                        var response = Request.CreateResponse(HttpStatusCode.Moved);
+                        response.Headers.Location =
+                            new Uri(Url.Content("~/wwwroot/pages/home.htm"));
+                        return response;
+                    }
+                }
+                else
+                {
+                    var response = Request.CreateResponse(HttpStatusCode.Moved);
+                    response.Headers.Location =
+                        new Uri(Url.Content("~/wwwroot/pages/home.htm"));
+                    return response;
+                }
+            }
+            catch (Exception ex)
+            {
+
+                return new ApiResponse<Object>() { data = null, error = ex.Message + " : " + ex.StackTrace };
+            }
+        }
 
         // POST: api/Category
         public void Post([FromBody]string value)
