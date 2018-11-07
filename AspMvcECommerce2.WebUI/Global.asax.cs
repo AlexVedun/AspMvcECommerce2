@@ -7,7 +7,6 @@ using System.Web.Routing;
 using System.Web.Security;
 using System.Web.SessionState;
 using System.Web.Http;
-using AspMvcECommerce2.WebUI.Infrastrucure;
 
 namespace AspMvcECommerce2.WebUI
 {

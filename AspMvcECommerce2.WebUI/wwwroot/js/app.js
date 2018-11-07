@@ -33,7 +33,8 @@
 
         //var src = $page.attr("src");
         var src = $page.data("src");
-        if (src && $page.find(">:first-child").length == 0) {
+        if (src
+            && ($page.find(">:first-child").length == 0 || $page.find("#error-root").length !== 0)) {
             //$.get(src, "html") // it has src and is empty - load it
             $.get(src) // it has src and is empty - load it
                 .done(function (html) {

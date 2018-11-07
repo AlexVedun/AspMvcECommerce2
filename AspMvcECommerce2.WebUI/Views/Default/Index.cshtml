@@ -94,6 +94,16 @@
     <section id="adminunit" data-src='@Url.Content("/api/auth/page?pagename=adminunit&param=no")'></section>
     @*<section id="about" class="active" data-src='@Url.Content("~/wwwroot/pages/about.htm")'></section>*@
 
+    <!-- Скрытое всплывающее окно -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <!-- Место для динамического добавления контента на клиенте -->
+        </div>
+        <div class="modal-footer">
+            <a href="" class="modal-close waves-effect waves-green btn-flat">Ok</a>
+        </div>
+    </div>
+
     <script src="~/wwwroot/js/jquery-3.3.1.min.js"></script>
     <script src="~/wwwroot/js/jquery-hashchange.js"></script>
     <script src="~/wwwroot/js/hogan-3.0.2.min.js"></script>

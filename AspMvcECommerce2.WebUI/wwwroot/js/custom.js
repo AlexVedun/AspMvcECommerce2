@@ -1,4 +1,6 @@
-﻿var preloaderHide = function () {
+﻿var $modal = $('#modal');
+
+var preloaderHide = function () {
     $('.preloader-wrapper').css('display', 'none');
 }
 
@@ -24,13 +26,13 @@ var onSignOut = function () {
     $("a[href='#!signin']").css('display', 'block');
     $("a[href='#!signup']").css('display', 'block');
     //TODO
-    $("section#!admin").html('');
+    $("section#admin").html('');
 }
 
 $(document).ready(function () {
 
     $('.sidenav').sidenav();
-    /*$('.modal').modal();
+    $('.modal').modal();
     $.get("/api/auth/checkauth")
         .done(function (resp) {
 
@@ -39,5 +41,5 @@ $(document).ready(function () {
                 onSignIn(resp);
             }
         })
-        .fail(function () { alert("Fatal error"); });*/
+        .fail(function () { alert("Fatal error"); });
 });

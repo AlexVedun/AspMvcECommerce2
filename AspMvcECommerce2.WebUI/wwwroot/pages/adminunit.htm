@@ -1,6 +1,6 @@
 ﻿<div id="categories-edit">
     <div class="row">
-        <div class="col s3">
+        <div class="col s12 m3 l3 xl3">
             <div class="card grey lighten-2">
                 <div class="card-content">
                     <span class="card-title">Category</span>
@@ -129,28 +129,11 @@
         </div>
     </div>
 </div>
-<!--<div class="container">
-    <div class="row">
-        <div class="col s12 m4 l4 xl4">
-            <div class="card">
-                <div class="card-content">
-                    <span class="card-title">Categories</span>
-                    <p>Manage the categories</p>
-                </div>
-                <div class="card-action">
-                    <a href="#tests:testid={{id}}">Пройти</a>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>-->
 <script>
-    app.handler(function () {
+    app.handler(function (param) {
 
-        //console.log(preloaderHide);
         return function (param) {
 
-            console.log(param);
             switch (param) {
                 case "categories": {
                     $('#categories-edit').css('display', 'block');
@@ -163,12 +146,14 @@
                             , type: 'GET'
                         }).done(function (resp) {
 
-                            if (resp.error != "") {
+                            if (resp.error != null && resp.error != "") {
 
-                                alert("error: " + resp.error);
+                                //alert("error: " + resp.error);
+                                var modalInstance = M.Modal.getInstance($modal);
+                                $modal.find('.modal-content').html(resp.error);
+                                modalInstance.open();
                             } else {
 
-                                //console.log(resp);
                                 var template = Hogan.compile(
                                     '<table class="table">'
                                     + '<thead>'
@@ -202,12 +187,15 @@
                                     $("#editCategory, #deleteCategory").removeAttr('disabled');
                                     //Отмечаем текст выбранной строки зеленым цветом, с остальных строк выделение убираем
                                     //(оно могло быть ранее установлено на одну из строк)
-                                    $(this).addClass("selectedTableRow").siblings().removeClass("selectedTableRow");
+                                    $(this).addClass("selectedTableRow")
+                                        .siblings().removeClass("selectedTableRow");
                                 });
                             }
-                        }).fail(function () {
+                        }).fail(function (xhr, status, message) {
 
-                            alert("error");
+                            var modalInstance = M.Modal.getInstance($modal);
+                            $modal.find('.modal-content').html(message);
+                            modalInstance.open();
                         });
                     }
 
@@ -245,7 +233,6 @@
 
                         ev.preventDefault();
                         var catId = $('#categories-edit .selectedTableRow').find('th').text();
-                        console.log(catId);
                         $.ajax({
                             url: "api/categories/delete"
                             , data: { 'catid': catId }
@@ -340,7 +327,7 @@
 
                         $.ajax({
                             type: 'GET',
-                            url: '/api/categories/get-all',
+                            url: 'api/categories/get-all',
                             dataType: 'json',
                             cache: false
                         }).done(function (responseText, textStatus, jqXHR) {
@@ -385,7 +372,6 @@
                             reader.onloadend = function () {
 
                                 imageBase64 = reader.result;
-                                console.log(imageBase64);
                                 $('#articles-edit img#image').attr('src', imageBase64);
                             }
                             reader.readAsDataURL(blob);
@@ -412,12 +398,9 @@
                             formData.push({ name: 'imageBase64', value: imageBase64 });
                             //data.push({ name: 'action', value: 'create' });
                             
-                            //console.log(formData[0].value);
                             formData[0].value = encodeURIComponent(formData[0].value);
                             formData[1].value = encodeURIComponent(formData[1].value);
-                            //console.log(formData[0].value);
 
-                            console.log(formData);
                             $.ajax({
                                 url: "api/articles/add"
                                 , data: formData
@@ -443,7 +426,6 @@
 
                         ev.preventDefault();
                         var artId = $('#articles-edit .selectedTableRow').find('th').text();
-                        console.log(artId);
                         $.ajax({
                             url: "api/articles/delete"
                             , data: { 'artid': artId }
