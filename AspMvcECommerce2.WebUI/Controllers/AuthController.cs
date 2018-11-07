@@ -20,16 +20,7 @@ namespace AspMvcECommerce2.WebUI.Controllers
         {
             mRepository = new SqlServerRepository();
         }*/
-        public AuthController(IRepository repository)
-        {
-            mRepository = repository;
-        }
-
-        //public AuthController()
-        //{
-        //    mRepository = new SqlServerRepository();
-        //}
-
+                            
         public AuthController(IRepository _repository)
         {
             mRepository = _repository;
