@@ -44,7 +44,7 @@ namespace AspMvcECommerce2.WebUI.Controllers
         }
 
         [Route("api/categories/add")]
-        public Object Get(string catname)
+        public Object Get(int catid, string catname)
         {
             try
             {
@@ -54,7 +54,9 @@ namespace AspMvcECommerce2.WebUI.Controllers
                         mRepository.UserEC.FindByLogin(HttpContext.Current.Session["username"].ToString());
                     if (user.Role.name == "admin")
                     {
-                        Category category = new Category() { name = catname, Articles = new List<Article>() };
+                        Category category = catid >= 0 ? mRepository.CategoryEC.Find(catid) : new Category();
+                        category.name = catname;
+                        //Category category = new Category() { name = catname, Articles = new List<Article>() };
                         mRepository.CategoryEC.Save(category);
                         return new ApiResponse<Object>() { data = new List<Category>() { category }, error = "" };
                     }

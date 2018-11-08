@@ -134,6 +134,9 @@
 
         return function (param) {
 
+            let isEdit = false;
+            let editId = -1;
+
             switch (param) {
                 case "categories": {
                     $('#categories-edit').css('display', 'block');
@@ -209,7 +212,7 @@
                             ev.preventDefault();
                             $.ajax({
                                 url: "api/categories/add"
-                                , data: { 'catname': $('#categories-edit input#name').val() }
+                                , data: {'catid': editId, 'catname': $('#categories-edit input#name').val() }
                                 , type: 'GET'
                             }).done(function (resp) {
 
@@ -224,10 +227,11 @@
 
                                 alert("error");
                             });
+                            editId = -1;
                         }
                     );
 
-                    //
+                    // Delete category
                     $("#deleteCategory").unbind("click");
                     $('#deleteCategory').click(function (ev) {
 
@@ -250,6 +254,16 @@
 
                             alert("error");
                         });
+                    });
+
+                    // Edit category
+                    $("#editCategory").unbind("click");
+                    $('#editCategory').click(function (ev) {
+
+                        ev.preventDefault();
+                        editId = $('#categories-edit .selectedTableRow').find('th').text();
+                        $('#categories-edit input#name').val($('#categories-edit .selectedTableRow').find('td').text());                                                
+                        $('#categories-edit input#name').focus();                           
                     });
 
                     break;
