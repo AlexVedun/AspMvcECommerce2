@@ -285,7 +285,7 @@
                                 alert("error: " + resp.error);
                             } else {
 
-                                //console.log(resp);
+                                console.log(resp);
                                 var template = Hogan.compile(
                                     '<table class="table">'
                                     + '<thead>'
@@ -301,10 +301,10 @@
                                         + '{{#data}}'
                                         + '<tr>'
                                         + '<th scope="row">{{id}}</th>'
-                                        + '<td>{{title}}</td>'
-                                        + '<td>{{Category.name}}</td>'
-                                        + '<td>{{price}}</td>'
-                                        + '<td>{{quantity}}</td>'
+                                        + '<td class="td_title">{{title}}</td>'
+                                        + '<td class="td_title">{{Category.name}}</td>'
+                                        + '<td class="td_price">{{price}}</td>'
+                                        + '<td class="td_title">{{quantity}}</td>'
                                         + '</tr>'
                                         + '{{/data}}'
                                         + '{{^data}}'
@@ -457,6 +457,44 @@
 
                             alert("error");
                         });
+                    });
+
+                    $("#editArticle").unbind("click");
+                    $('#editArticle').click(function (ev) {
+
+
+                        ev.preventDefault();
+                        $.ajax({
+                            url: "/api/articles/get-all"
+                            , type: 'GET'
+                        }).done(function (resp) {
+
+                            if (resp.error != "") {
+
+                                alert("error: " + resp.error);
+                            } else {
+
+                                editId = $('#articles-edit .selectedTableRow').find('th').text();
+                                let indx = resp.data.findIndex(x => x.id == editId);
+                                console.log(indx);
+                                $('#articles-edit input#title').val(resp.data[indx].title);
+                                $('#articles-edit textarea#description').val(resp.data[indx].description);
+                                $('#articles-edit input#price').val(resp.data[indx].price);
+                                $('#articles-edit input#quantity').val(resp.data[indx].quantity);
+                                $('#articles-edit img#image').attr('src', resp.data[indx].image_base64);
+                                $('#articles-edit input#title').focus();
+                            }
+                        }).fail(function () {
+
+                            alert("error");
+                        });
+
+
+                        
+                        
+                        
+                        
+                        
                     });
 
                     break;
