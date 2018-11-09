@@ -404,12 +404,14 @@
                             //console.log(formData['title']);
                             var selectedCategoryIndex =
                                 $('#articles-edit form #category-select li.selected').index();
+                            //console.log(selectedCategoryIndex);
                             var selectedCategoryId =
                                 $('#articles-edit form #category-select select option')
                                     .eq(selectedCategoryIndex)
                                     .val();
                             formData.push({ name: 'categoryid', value: selectedCategoryId });
                             formData.push({ name: 'imageBase64', value: imageBase64 });
+                            formData.push({ name: 'Id', value: editId });
                             //data.push({ name: 'action', value: 'create' });
                             
                             formData[0].value = encodeURIComponent(formData[0].value);
@@ -432,6 +434,7 @@
 
                                 alert("error");
                             });
+                            editId = -1;
                         }
                     );
 
@@ -461,8 +464,7 @@
 
                     $("#editArticle").unbind("click");
                     $('#editArticle').click(function (ev) {
-
-
+                        
                         ev.preventDefault();
                         $.ajax({
                             url: "/api/articles/get-all"
@@ -476,25 +478,37 @@
 
                                 editId = $('#articles-edit .selectedTableRow').find('th').text();
                                 let indx = resp.data.findIndex(x => x.id == editId);
-                                console.log(indx);
+                                //console.log(indx);
                                 $('#articles-edit input#title').val(resp.data[indx].title);
+                                $('#articles-edit input#title').focus();
+
+                                //console.log(resp.data[indx].Category.name);
+                                $("#articles-edit form #category-select .select-dropdown li").children().removeAttr("selected");
+                                $('#articles-edit form #category-select .select-dropdown li').removeClass('active selected');
+                                //$('#articles-edit form #category-select select option').eq(resp.data[indx].category_id).attr('selected', 'selected');
+                                $('#articles-edit form #category-select .select-dropdown li span:contains(' + resp.data[indx].Category.name + ')').parent().addClass('active selected');
+                                $('#articles-edit form #category-select .select-dropdown li span:contains(' + resp.data[indx].Category.name + ')').parent().attr('selected', 'selected');
+                                $('#articles-edit form #category-select .select-dropdown').val(resp.data[indx].Category.name);
+                                $('#articles-edit form #category-select .select-dropdown').focus();
+
                                 $('#articles-edit textarea#description').val(resp.data[indx].description);
+                                $('#articles-edit textarea#description').focus();
+
                                 $('#articles-edit input#price').val(resp.data[indx].price);
+                                $('#articles-edit input#price').focus();
+
                                 $('#articles-edit input#quantity').val(resp.data[indx].quantity);
-                                $('#articles-edit img#image').attr('src', resp.data[indx].image_base64);
+                                $('#articles-edit input#quantity').focus();
+
+                                imageBase64 = resp.data[indx].image_base64;
+                                $('#articles-edit img#image').attr('src', imageBase64);
+
                                 $('#articles-edit input#title').focus();
                             }
                         }).fail(function () {
 
                             alert("error");
                         });
-
-
-                        
-                        
-                        
-                        
-                        
                     });
 
                     break;

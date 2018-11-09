@@ -54,7 +54,7 @@ namespace AspMvcECommerce2.WebUI.Controllers
                         mRepository.UserEC.FindByLogin(HttpContext.Current.Session["username"].ToString());
                     if (user.Role.name == "admin")
                     {
-                        Category category = catid >= 0 ? mRepository.CategoryEC.Find(catid) : new Category();
+                        Category category = catid > 0 ? mRepository.CategoryEC.Find(catid) : new Category();
                         category.name = catname;
                         //Category category = new Category() { name = catname, Articles = new List<Article>() };
                         mRepository.CategoryEC.Save(category);

@@ -62,22 +62,30 @@ namespace AspMvcECommerce2.WebUI.Controllers
                     {
                         Category category =
                             mRepository.CategoryEC.Find(_articleForm.Categoryid);
-                        Article article = new Article()
-                        {
-                            title = Uri.UnescapeDataString(_articleForm.Title)
-                            ,
-                            category_id = _articleForm.Categoryid
-                            ,
-                            description = Uri.UnescapeDataString(_articleForm.Description)
-                            ,
-                            price = _articleForm.Price
-                            ,
-                            quantity = _articleForm.Quantity
-                            ,
-                            Category = category
-                            ,
-                            image_base64 = _articleForm.ImageBase64
-                        };
+                        Article article = _articleForm.Id > 0 ? mRepository.ArticleEC.Find(_articleForm.Id) : new Article();
+                        article.title = Uri.UnescapeDataString(_articleForm.Title);
+                        article.category_id = _articleForm.Categoryid;
+                        article.description = Uri.UnescapeDataString(_articleForm.Description);
+                        article.price = _articleForm.Price;
+                        article.quantity = _articleForm.Quantity;
+                        article.Category = category;
+                        article.image_base64 = _articleForm.ImageBase64;
+                        //Article article = new Article()
+                        //{
+                        //    title = Uri.UnescapeDataString(_articleForm.Title)
+                        //    ,
+                        //    category_id = _articleForm.Categoryid
+                        //    ,
+                        //    description = Uri.UnescapeDataString(_articleForm.Description)
+                        //    ,
+                        //    price = _articleForm.Price
+                        //    ,
+                        //    quantity = _articleForm.Quantity
+                        //    ,
+                        //    Category = category
+                        //    ,
+                        //    image_base64 = _articleForm.ImageBase64
+                        //};
                         mRepository.ArticleEC.Save(article);
                         return new ApiResponse<Object>() { data = new List<ArticleForm>() { _articleForm }, error = "" };
                     }

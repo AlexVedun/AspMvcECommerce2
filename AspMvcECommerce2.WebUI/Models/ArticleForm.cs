@@ -7,6 +7,7 @@ namespace AspMvcECommerce2.WebUI.Models
 {
     public class ArticleForm
     {
+        public int Id { get; set; }
         public string Title { get; set; }
         public int Categoryid { get; set; }
         public string Description { get; set; }
