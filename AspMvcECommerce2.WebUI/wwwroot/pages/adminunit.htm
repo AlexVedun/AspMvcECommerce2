@@ -134,7 +134,6 @@
 
         return function (param) {
 
-            let isEdit = false;
             let editId = -1;
 
             switch (param) {
@@ -192,6 +191,7 @@
                                     //(оно могло быть ранее установлено на одну из строк)
                                     $(this).addClass("selectedTableRow")
                                         .siblings().removeClass("selectedTableRow");
+                                    editId = -1;
                                 });
                             }
                         }).fail(function (xhr, status, message) {
@@ -326,6 +326,7 @@
                                     //Отмечаем текст выбранной строки зеленым цветом, с остальных строк выделение убираем
                                     //(оно могло быть ранее установлено на одну из строк)
                                     $(this).addClass("selectedTableRow").siblings().removeClass("selectedTableRow");
+                                    editId = -1;
                                 });
                             }
                         }).fail(function () {
@@ -403,8 +404,7 @@
                             var formData = $('#articles-edit form').serializeArray();
                             //console.log(formData['title']);
                             var selectedCategoryIndex =
-                                $('#articles-edit form #category-select li.selected').index();
-                            //console.log(selectedCategoryIndex);
+                                $('#articles-edit form #category-select li.selected').index();                           
                             var selectedCategoryId =
                                 $('#articles-edit form #category-select select option')
                                     .eq(selectedCategoryIndex)
@@ -464,7 +464,7 @@
 
                     $("#editArticle").unbind("click");
                     $('#editArticle').click(function (ev) {
-                        
+                        // Получаем данные из базы данных
                         ev.preventDefault();
                         $.ajax({
                             url: "/api/articles/get-all"
@@ -475,34 +475,43 @@
 
                                 alert("error: " + resp.error);
                             } else {
-
+                                // Получаем id редактируемой строки
                                 editId = $('#articles-edit .selectedTableRow').find('th').text();
+                                // Находим индекс нужного объекта в массиве данных, пришедших от базы данных
                                 let indx = resp.data.findIndex(x => x.id == editId);
-                                //console.log(indx);
-                                $('#articles-edit input#title').val(resp.data[indx].title);
+                                // Получаем объект записи базы данных
+                                let record = resp.data[indx];
+                                
+                                //Выводим title
+                                $('#articles-edit input#title').val(record.title);
                                 $('#articles-edit input#title').focus();
 
-                                //console.log(resp.data[indx].Category.name);
+                                // Удаляем предыдущий выбор в списке категорий
                                 $("#articles-edit form #category-select .select-dropdown li").children().removeAttr("selected");
                                 $('#articles-edit form #category-select .select-dropdown li').removeClass('active selected');
-                                //$('#articles-edit form #category-select select option').eq(resp.data[indx].category_id).attr('selected', 'selected');
-                                $('#articles-edit form #category-select .select-dropdown li span:contains(' + resp.data[indx].Category.name + ')').parent().addClass('active selected');
-                                $('#articles-edit form #category-select .select-dropdown li span:contains(' + resp.data[indx].Category.name + ')').parent().attr('selected', 'selected');
-                                $('#articles-edit form #category-select .select-dropdown').val(resp.data[indx].Category.name);
+                                // Отмечаем нужный пункт в списке категорий как выбранный
+                                $('#articles-edit form #category-select .select-dropdown li span:contains(' + record.Category.name + ')').parent().addClass('active selected');
+                                $('#articles-edit form #category-select .select-dropdown li span:contains(' + record.Category.name + ')').parent().attr('selected', 'selected');
+                                // Выводим название выбранной категории
+                                $('#articles-edit form #category-select .select-dropdown').val(record.Category.name);
                                 $('#articles-edit form #category-select .select-dropdown').focus();
 
-                                $('#articles-edit textarea#description').val(resp.data[indx].description);
+                                // Выводим description
+                                $('#articles-edit textarea#description').val(record.description);
                                 $('#articles-edit textarea#description').focus();
 
-                                $('#articles-edit input#price').val(resp.data[indx].price);
+                                //Выводим price
+                                $('#articles-edit input#price').val(record.price);
                                 $('#articles-edit input#price').focus();
 
-                                $('#articles-edit input#quantity').val(resp.data[indx].quantity);
+                                //Выводим quantity
+                                $('#articles-edit input#quantity').val(record.quantity);
                                 $('#articles-edit input#quantity').focus();
 
-                                imageBase64 = resp.data[indx].image_base64;
+                                // Выводим изображение
+                                imageBase64 = record.image_base64;
                                 $('#articles-edit img#image').attr('src', imageBase64);
-
+                                // Устанавливаем фокус на первое поле ввода
                                 $('#articles-edit input#title').focus();
                             }
                         }).fail(function () {
