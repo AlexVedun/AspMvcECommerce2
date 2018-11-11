@@ -9,7 +9,6 @@
 
 namespace AspMvcECommerce2.Domain
 {
-    using Newtonsoft.Json;
     using System;
     using System.Collections.Generic;
     
@@ -17,7 +16,6 @@ namespace AspMvcECommerce2.Domain
     {
         public int id { get; set; }
         public string login { get; set; }
-        [JsonIgnore]
         public string password { get; set; }
         public Nullable<int> role_id { get; set; }
     
