@@ -167,8 +167,83 @@ namespace AspMvcECommerce2.WebUI.Controllers
 
                 return new ApiResponse<Object>() { data = null, error = ex.Message + " : " + ex.StackTrace };
             }
-
-
         }
+
+        [Route("api/articles/get-filtered")]
+        public Object Post(FilterForm _filterModel)
+        {
+            //if (HttpContext.Current.Session["username"] != null)
+            //{
+
+            bool filterByCategory =
+                (_filterModel != null && _filterModel.categories != null)
+                ? true
+                : false;
+
+            int[] categoryIds = null;
+
+            var query = mRepository.ArticleEC.Articles;
+
+            if (_filterModel != null)
+            {
+
+                if (filterByCategory)
+                {
+                    categoryIds = _filterModel.categories;
+                    query =
+                       query.Where(a =>
+                       {
+                           bool selected = false;
+                           foreach (int categoryId in categoryIds)
+                           {
+                               if (a.category_id == categoryId)
+                               {
+                                   selected = true;
+                                   break;
+                               }
+                           }
+                           return selected;
+                       });
+                }
+
+                switch (_filterModel.sort)
+                {
+                    case FilterForm.OrderBy.sortPriceDesc:
+                        query = query.OrderByDescending((a => a.price));
+                        break;
+                    case FilterForm.OrderBy.sortPriceAsc:
+                        query = query.OrderBy((a => a.price));
+                        break;
+                    default:
+                        break;
+                }
+            }
+            query =
+                query.Select(
+                        (a => {
+                            if (a.image_base64 == null || a.image_base64 == "")
+                            {
+                                a.image_base64 = "/wwwroot/images/no-image.png";
+                            }
+                            return a;
+                        })
+                    );
+
+            return new ApiResponse<List<Article>>()
+            {
+                data = query.ToList()
+                ,
+                error = ""
+            };
+        }
+        //else
+        //{
+        /*var response = Request.CreateResponse(HttpStatusCode.Moved);
+        response.Headers.Location =
+            new Uri(Url.Content("/#signin"));
+        return response;*/
+        //return null;
+        //}
+    
     }
 }
