@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 10/30/2018 20:13:47
+-- Date Created: 11/13/2018 19:29:24
 -- Generated from EDMX file: C:\Users\Alex\source\repos\AspMvcECommerce2\AspMvcECommerce2.Domain\Model1.edmx
 -- --------------------------------------------------
 
@@ -46,8 +46,8 @@ GO
 IF OBJECT_ID(N'[dbo].[Articles]', 'U') IS NOT NULL
     DROP TABLE [dbo].[Articles];
 GO
-IF OBJECT_ID(N'[dbo].[Brand]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[Brand];
+IF OBJECT_ID(N'[dbo].[Brands]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[Brands];
 GO
 IF OBJECT_ID(N'[dbo].[Categories]', 'U') IS NOT NULL
     DROP TABLE [dbo].[Categories];
@@ -83,7 +83,7 @@ GO
 CREATE TABLE [dbo].[Articles] (
     [id] int IDENTITY(1,1) NOT NULL,
     [title] nvarchar(25)  NOT NULL,
-    [description] nvarchar(25)  NOT NULL,
+    [description] nvarchar(255)  NOT NULL,
     [image_url] nvarchar(225)  NULL,
     [image_base64] varchar(max)  NULL,
     [category_id] int  NULL,

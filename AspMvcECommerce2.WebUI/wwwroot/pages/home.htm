@@ -30,17 +30,41 @@
                                 <form id="order-rules" action="#">
                                     <p>
                                         <label>
-                                            <input id="sortPriceDesc" name="sort-group" type="radio" />
-                                            <span>expensive first</span>
+                                            <input id="sortTitle" name="sort-param-group" type="radio" checked="checked" />
+                                            <span>Title</span>
                                         </label>
                                     </p>
                                     <p>
                                         <label>
-                                            <input id="sortPriceAsc" name="sort-group" type="radio" checked="checked" />
-                                            <span>cheap first</span>
+                                            <input id="sortCategory" name="sort-param-group" type="radio" />
+                                            <span>Category</span>
                                         </label>
                                     </p>
-                                    
+                                    <p>
+                                        <label>
+                                            <input id="sortPrice" name="sort-param-group" type="radio" />
+                                            <span>Price</span>
+                                        </label>
+                                    </p>
+                                    <p>
+                                        <label>
+                                            <input id="sortQuantity" name="sort-param-group" type="radio" />
+                                            <span>Quantity</span>
+                                        </label>
+                                    </p>
+                                    <p>
+                                        <label>
+                                            <input id="sortDesc" name="sort-group" type="radio" />
+                                            <span>In descending order</span>
+                                        </label>
+                                    </p>
+                                    <p>
+                                        <label>
+                                            <input id="sortAsc" name="sort-group" type="radio" checked="checked" />
+                                            <span>In ascending order</span>
+                                        </label>
+                                    </p>
+
                                 </form>
                             </div>
                         </li>
@@ -94,7 +118,9 @@
     
                 if (_filterData === undefined) {
                     _filterData =
-                        { 'sort': $('form#order-rules input[type=radio]:checked').attr('id') };
+                        {
+                        'sort': $('form#order-rules input[type=radio][name=sort-group]:checked').attr('id'),
+                        'sortParam': $('form#order-rules input[type=radio][name=sort-param-group]:checked').attr('id')    };
                 }
                     
                 $.ajax({
@@ -277,7 +303,9 @@
                 //В любом случае одна из радио-кнопок сортировки выбрана,
                 //добавляем параметр сортировки в объект запроса
                 filterData["sort"] =
-                    $('form#order-rules input[type=radio]:checked').attr('id');
+                    $('form#order-rules input[type=radio][name=sort-group]:checked').attr('id');
+                filterData["sortParam"] =
+                    $('form#order-rules input[type=radio][name=sort-param-group]:checked').attr('id');
     
                 populateArticlesGrid(filterData);
             }
@@ -293,9 +321,17 @@
     
             $(document).on(
                 'change'
-                , 'form#order-rules input[type=radio]:checked'
+                , 'form#order-rules input[type=radio][name=sort-group]:checked'
                 , function () {
     
+                    doFilter();
+                });
+
+            $(document).on(
+                'change'
+                , 'form#order-rules input[type=radio][name=sort-param-group]:checked'
+                , function () {
+
                     doFilter();
                 });
     

@@ -55,7 +55,7 @@
     </Key>
     <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="title" Type="nvarchar" Nullable="false" MaxLength="25" />
-    <Property Name="description" Type="nvarchar" Nullable="false" MaxLength="25" />
+    <Property Name="description" Type="nvarchar" Nullable="false" MaxLength="255" />
     <Property Name="image_url" Type="nvarchar" Nullable="true" MaxLength="225" />
     <Property Name="image_base64" Type="varchar(max)" Nullable="true" />
     <Property Name="category_id" Type="int" Nullable="true" />
