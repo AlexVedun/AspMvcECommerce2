@@ -30,17 +30,41 @@
                                 <form id="order-rules" action="#">
                                     <p>
                                         <label>
-                                            <input id="sortPriceDesc" name="sort-group" type="radio" />
-                                            <span>expensive first</span>
+                                            <input id="sortTitle" name="sort-param-group" type="radio" checked="checked" />
+                                            <span>Title</span>
                                         </label>
                                     </p>
                                     <p>
                                         <label>
-                                            <input id="sortPriceAsc" name="sort-group" type="radio" checked="checked" />
-                                            <span>cheap first</span>
+                                            <input id="sortCategory" name="sort-param-group" type="radio" />
+                                            <span>Category</span>
                                         </label>
                                     </p>
-                                    
+                                    <p>
+                                        <label>
+                                            <input id="sortPrice" name="sort-param-group" type="radio" />
+                                            <span>Price</span>
+                                        </label>
+                                    </p>
+                                    <p>
+                                        <label>
+                                            <input id="sortQuantity" name="sort-param-group" type="radio" />
+                                            <span>Quantity</span>
+                                        </label>
+                                    </p>
+                                    <p>
+                                        <label>
+                                            <input id="sortDesc" name="sort-group" type="radio" />
+                                            <span>In descending order</span>
+                                        </label>
+                                    </p>
+                                    <p>
+                                        <label>
+                                            <input id="sortAsc" name="sort-group" type="radio" checked="checked" />
+                                            <span>In ascending order</span>
+                                        </label>
+                                    </p>
+
                                 </form>
                             </div>
                         </li>
@@ -93,8 +117,13 @@
                 preloaderShow();
     
                 if (_filterData === undefined) {
+                    /*_filterData =
+                        { 'sort': $('form#order-rules input[type=radio]:checked').attr('id') };*/
                     _filterData =
-                        { 'sort': $('form#order-rules input[type=radio]:checked').attr('id') };
+                        {
+                            'sort': $('form#order-rules input[type=radio][name=sort-group]:checked').attr('id'),
+                            'sortParam': $('form#order-rules input[type=radio][name=sort-param-group]:checked').attr('id')
+                        };
                 }
                     
                 $.ajax({
@@ -111,29 +140,6 @@
     
                         alert("error: " + resp.error);
                     } else {
-    
-                        /*var template = Hogan.compile(
-                            '{{#data}}'
-                            + '<div class="col s12 m12 l6 xl4">'
-                                + '<div class="card hoverable">'
-                                    + '<div class="card-image">'
-                                        + '<img src="{{image_base64}}">'
-                                        + '<a id="{{id}}" class="btn-floating halfway-fab waves-effect waves-light red tooltipped" data-position="top" data-tooltip="Add one item to cart"><i class="material-icons">add</i></a>'
-                                    + '</div>'
-                                    + '<div class="card-content">'
-                                        + '<span class="card-title">'
-                                        + '<div>{{title}} ({{Category.name}})</div>'
-                                        + '<div>${{price}}</div>'
-                                        + '</span>'
-                                        + '<p>{{description}}</p>'
-                                    + '</div>'
-                                + '</div>'
-                            + '</div>'
-                            + '{{/data}}'
-                            + '{{^data}}'
-                            + '<p>No goods</p>'
-                            + '{{/data}}'
-                        );*/
 
                         var template = Hogan.compile(
                             '<div class="col s12 m12 l6 xl4">'
@@ -181,11 +187,14 @@
                             var artId = $(this).attr('id');
                                 
                             $.ajax({
-                                url: "api/articles/add/" + artId
-                                , type: 'GET'
+                                url: "api/articles/cart/" + artId
+                                , data: JSON.stringify({ 'actionTypeValue': "add" })
+                                , type: 'POST'
+                                , dataType: 'json'
+                                , contentType: 'application/json; charset=UTF-8'
                             }).done(function (resp) {
     
-                                if (resp.error !== "") {
+                                if (resp.error !== null && resp.error !== "") {
     
                                     alert("error: " + resp.error);
                                 } else {
@@ -222,9 +231,9 @@
                     cache: false
                 }).done(function (resp) {
     
-                    if (resp != undefined) {
-                        if (resp.error != "") {
-                            if (resp.error != undefined) {
+                    if (resp !== undefined) {
+                        if (resp.error !== undefined && resp.error !== null) {
+                            if (resp.error !== "") {
                                 alert("error: " + resp.error);
                             }
                         } else {
@@ -271,8 +280,12 @@
                 }
                 //В любом случае одна из радио-кнопок сортировки выбрана,
                 //добавляем параметр сортировки в объект запроса
+                /*filterData["sort"] =
+                    $('form#order-rules input[type=radio]:checked').attr('id');*/
                 filterData["sort"] =
-                    $('form#order-rules input[type=radio]:checked').attr('id');
+                    $('form#order-rules input[type=radio][name=sort-group]:checked').attr('id');
+                filterData["sortParam"] =
+                    $('form#order-rules input[type=radio][name=sort-param-group]:checked').attr('id');
     
                 populateArticlesGrid(filterData);
             }
@@ -295,134 +308,146 @@
                 });
     
             var showCart = function () {
-    
+
+                setModalOk();
                 $.ajax({
-                    url: "api/articles/cart?b=true"
+                    url: "api/articles/cart"
                     , type: 'GET'
                 }).done(function (resp) {
-    
-                    if (resp.error != "") {
-    
-                        alert("error: " + resp.error);
-                    } else {
-    
-                        var template = Hogan.compile(
-                            '<table class="table">'
-                            + '<thead>'
-                            + '<tr>'
-                            + '<th>id</th>'
-                            + '<th>name</th>'
-                            + '<th>count</th>'
-                            + '</tr>'
-                            + '</thead>'
-                            + '<tbody>'
-                            + '{{#data}}'
-                            + '<tr>'
-                            + '<th scope="row">{{ArticleId}}</th>'
-                            + '<td>{{ArticleName}}</td>'
-                            + '<td>{{Count}}</td>'
-                            + '<td>'
-                            + '<div class="row">'
-                            + '<a class="col s3 offset-s1 waves-effect waves-light btn negBtn"><i class="material-icons">exposure_neg_1</i></a>'
-                            + '<a class="col s3 offset-s1 waves-effect waves-light btn plusBtn"><i class="material-icons">exposure_plus_1</i></a>'
-                            + '<a class="col s3 offset-s1 waves-effect waves-light btn remBtn"><i class="material-icons">clear</i></a>'
-                            + '</div>'
-                            + '</td>'
-                            + '</tr>'
-                            + '{{/data}}'
-                            + '{{^data}}'
-                            + '<span>Cart is empty</span>'
-                            + '{{/data}}'
-                            + '</tbody>'
-                            + '</table>'
-                        );
-                        //Заполняем шаблон данными и помещаем на веб-страницу
-                        $('#modal .modal-content').html(template.render(resp));
-    
-                        $(".plusBtn").unbind("click");
-                        $('.plusBtn').click(function (ev) {
-    
-                            ev.preventDefault();
-                            var artId = $(this).parent().parent().parent().children('th').text();
-                            console.log(artId);
-                            $.ajax({
-                                url: "api/articles/fromcart"
-                                , data: { 'artid': artId, 'type': "add" }
-                                , type: 'GET'
-                            }).done(function (resp) {
-    
-                                if (resp.error != "") {
-    
-                                    alert("error: " + resp.error);
-                                } else {
-                                    console.log("One item added to the cart");
-                                    //$cartHref.click();
-                                    showCart();
-                                }
-                            }).fail(function () {
-    
-                                alert("error");
+
+                    if (resp !== undefined) {
+                        if (resp.error !== null && resp.error !== "") {
+
+                            alert("error: " + resp.error);
+                        } else {
+
+                            var template = Hogan.compile(
+                                '<table class="table">'
+                                + '<thead>'
+                                + '<tr>'
+                                + '<th>id</th>'
+                                + '<th>name</th>'
+                                + '<th>count</th>'
+                                + '</tr>'
+                                + '</thead>'
+                                + '<tbody>'
+                                + '{{#data}}'
+                                + '<tr>'
+                                + '<th scope="row">{{ArticleId}}</th>'
+                                + '<td>{{ArticleName}}</td>'
+                                + '<td>{{Count}}</td>'
+                                + '<td>'
+                                + '<div class="row">'
+                                + '<a class="col s3 offset-s1 waves-effect waves-light btn negBtn"><i class="material-icons">exposure_neg_1</i></a>'
+                                + '<a class="col s3 offset-s1 waves-effect waves-light btn plusBtn"><i class="material-icons">exposure_plus_1</i></a>'
+                                + '<a class="col s3 offset-s1 waves-effect waves-light btn remBtn"><i class="material-icons">clear</i></a>'
+                                + '</div>'
+                                + '</td>'
+                                + '</tr>'
+                                + '{{/data}}'
+                                + '{{^data}}'
+                                + '<span>Cart is empty</span>'
+                                + '{{/data}}'
+                                + '</tbody>'
+                                + '</table>'
+                            );
+                            //Заполняем шаблон данными и помещаем на веб-страницу
+                            $('#modal .modal-content').html(template.render(resp));
+
+                            $(".plusBtn").unbind("click");
+                            $('.plusBtn').click(function (ev) {
+
+                                ev.preventDefault();
+                                var artId = $(this).parent().parent().parent().children('th').text();
+                                //console.log(artId);
+                                $.ajax({
+                                    url: "api/articles/cart/" + artId
+                                    , data: JSON.stringify({ 'actionTypeValue': "add" })
+                                    , type: 'POST'
+                                    , dataType: 'json'
+                                    , contentType: 'application/json; charset=UTF-8'
+                                }).done(function (resp) {
+
+                                    if (resp.error !== null && resp.error !== "") {
+
+                                        alert("error: " + resp.error);
+                                    } else {
+                                        //console.log("One item added to the cart");
+                                        M.toast({ html: 'One item added to the cart' });
+                                        //$cartHref.click();
+                                        showCart();
+                                    }
+                                }).fail(function () {
+
+                                    alert("error");
+                                });
                             });
-                        });
-    
-                        $(".negBtn").unbind("click");
-                        $('.negBtn').click(function (ev) {
-    
-                            ev.preventDefault();
-                            //var artId = $(this).attr('id');
-                            var artId = $(this).parent().parent().parent().children('th').text();
-                            //console.log(artId);
-                            $.ajax({
-                                url: "api/articles/fromcart"
-                                , data: { 'artid': artId, 'type': 'neg' }
-                                , type: 'GET'
-                            }).done(function (resp) {
-    
-                                if (resp.error != "") {
-    
-                                    alert("error: " + resp.error);
-                                } else {
-                                    console.log("One item remove from cart");
-                                    //$cartHref.click();
-                                    showCart();
-                                }
-                            }).fail(function () {
-    
-                                alert("error");
-                            });
-                        });
-    
-                        $(".remBtn").unbind("click");
-                        $('.remBtn').click(function (ev) {
-    
-                            if (confirm("remove all items?")) {
-    
+
+                            $(".negBtn").unbind("click");
+                            $('.negBtn').click(function (ev) {
+
                                 ev.preventDefault();
                                 //var artId = $(this).attr('id');
                                 var artId = $(this).parent().parent().parent().children('th').text();
                                 //console.log(artId);
                                 $.ajax({
-                                    url: "api/articles/fromcart"
-                                    , data: { 'artid': artId, 'type': 'rem' }
-                                    , type: 'GET'
+                                    url: "api/articles/cart/" + artId
+                                    , data: JSON.stringify({ 'actionTypeValue': "neg" })
+                                    , type: 'POST'
+                                    , dataType: 'json'
+                                    , contentType: 'application/json; charset=UTF-8'
                                 }).done(function (resp) {
-    
-                                    if (resp.error != "") {
-    
+
+                                    if (resp.error !== null && resp.error !== "") {
+
                                         alert("error: " + resp.error);
                                     } else {
-                                        console.log("All items remove from cart");
+                                        //console.log("One item removed from cart");
                                         //$cartHref.click();
+                                        M.toast({ html: 'One item removed from cart' });
                                         showCart();
                                     }
                                 }).fail(function () {
-    
+
                                     alert("error");
                                 });
-                            } else {
-                                alert("ok!");
-                            }
-                        });
+                            });
+
+                            $(".remBtn").unbind("click");
+                            $('.remBtn').click(function (ev) {
+
+                                if (confirm("remove all the items?")) {
+
+                                    ev.preventDefault();
+                                    //var artId = $(this).attr('id');
+                                    var artId = $(this).parent().parent().parent().children('th').text();
+                                    //console.log(artId);
+                                    $.ajax({
+                                        url: "api/articles/cart/" + artId
+                                        , data: JSON.stringify({ 'actionTypeValue': "rem" })
+                                        , type: 'POST'
+                                        , dataType: 'json'
+                                        , contentType: 'application/json; charset=UTF-8'
+                                    }).done(function (resp) {
+
+                                        if (resp.error != null && resp.error != "") {
+
+                                            alert("error: " + resp.error);
+                                        } else {
+                                            //console.log("All items remove from cart");
+                                            //$cartHref.click();
+                                            M.toast({ html: 'All the items removed from cart' });
+                                            showCart();
+                                        }
+                                    }).fail(function () {
+
+                                        alert("error");
+                                    });
+                                } else {
+                                    //alert("ok!");
+                                }
+                            });
+                        }
                     }
                 }).fail(function () {
     
@@ -430,8 +455,8 @@
                 });
             };
     
-            //$cartHref.unbind('click');
-            //$cartHref.click(showCart);
+            $cart.unbind('click');
+            $cart.click(showCart);
 
             setTimeout(preloaderHide, 500);
         };

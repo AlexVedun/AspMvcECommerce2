@@ -205,11 +205,43 @@ namespace AspMvcECommerce2.WebUI.Controllers
 
                 switch (_filterModel.sort)
                 {
-                    case FilterForm.OrderBy.sortPriceDesc:
-                        query = query.OrderByDescending((a => a.price));
+                    case FilterForm.OrderBy.sortDesc:
+                        switch (_filterModel.sortParam)
+                        {
+                            case FilterForm.SortParam.sortTitle:
+                                query = query.OrderByDescending((a => a.title));
+                                break;
+                            case FilterForm.SortParam.sortCategory:
+                                query = query.OrderByDescending((a => a.Category.name));
+                                break;
+                            case FilterForm.SortParam.sortPrice:
+                                query = query.OrderByDescending((a => a.price));
+                                break;
+                            case FilterForm.SortParam.sortQuantity:
+                                query = query.OrderByDescending((a => a.quantity));
+                                break;
+                            default:
+                                break;
+                        }
                         break;
-                    case FilterForm.OrderBy.sortPriceAsc:
-                        query = query.OrderBy((a => a.price));
+                    case FilterForm.OrderBy.sortAsc:
+                        switch (_filterModel.sortParam)
+                        {
+                            case FilterForm.SortParam.sortTitle:
+                                query = query.OrderBy((a => a.title));
+                                break;
+                            case FilterForm.SortParam.sortCategory:
+                                query = query.OrderBy((a => a.Category.name));
+                                break;
+                            case FilterForm.SortParam.sortPrice:
+                                query = query.OrderBy((a => a.price));
+                                break;
+                            case FilterForm.SortParam.sortQuantity:
+                                query = query.OrderBy((a => a.quantity));
+                                break;
+                            default:
+                                break;
+                        }
                         break;
                     default:
                         break;

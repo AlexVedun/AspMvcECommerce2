@@ -9,11 +9,20 @@ namespace AspMvcECommerce2.WebUI.Models
     {
         public enum OrderBy
         {
-            sortPriceDesc
-            , sortPriceAsc
+            sortDesc
+            , sortAsc
+        }
+
+        public enum SortParam
+        {
+            sortTitle,
+            sortCategory,
+            sortPrice,
+            sortQuantity
         }
 
         public int[] categories { get; set; }
         public OrderBy sort { get; set; }
+        public SortParam sortParam { get; set; }
     }
 }
