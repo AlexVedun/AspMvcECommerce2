@@ -40,6 +40,8 @@ namespace AspMvcECommerce2.WebUI.Controllers
                                 ArticleName = article.title
                                 ,
                                 Count = cartItem.Count
+                                ,
+                                Summ = cartItem.Count * article.price
                             };
                         })
                         .ToList();

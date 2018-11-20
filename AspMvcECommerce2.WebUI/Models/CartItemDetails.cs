@@ -10,5 +10,6 @@ namespace AspMvcECommerce2.WebUI.Models
         public int ArticleId { get; set; }
         public string ArticleName { get; set; }
         public int Count { get; set; }
+        public decimal Summ { get; set; }
     }
 }
