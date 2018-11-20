@@ -153,6 +153,7 @@
                                 //alert("error: " + resp.error);
                                 var modalInstance = M.Modal.getInstance($modal);
                                 $modal.find('.modal-content').html(resp.error);
+                                setModalOk();
                                 modalInstance.open();
                             } else {
 
@@ -198,6 +199,7 @@
 
                             var modalInstance = M.Modal.getInstance($modal);
                             $modal.find('.modal-content').html(message);
+                            setModalOk();
                             modalInstance.open();
                         });
                     }
