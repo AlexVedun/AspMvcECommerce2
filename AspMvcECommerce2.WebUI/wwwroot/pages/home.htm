@@ -82,6 +82,12 @@
     
 </div>
 <script>
+    const formatter = new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD',
+        minimumFractionDigits: 2
+    });
+
     $('.sidenav').sidenav();
     $('.collapsible').collapsible();
     app.handler(function (param) {
@@ -138,6 +144,10 @@
                         alert("error: " + resp.error);
                     } else {
 
+                        for (item of resp.data) {                            
+                            item.price = formatter.format(item.price);
+                        }
+
                         var template = Hogan.compile(
                             '<div class="col s12 m12 l6 xl4">'
                                 + '<div class="card hoverable">'
@@ -148,7 +158,7 @@
                                     + '<div class="card-content">'
                                         + '<span class="card-title">'
                                         + '<div>{{title}} ({{Category.name}})</div>'
-                                        + '<div>${{price}}</div>'
+                                        + '<div>{{price}}</div>'
                                         + '</span>'
                                         + '<p>{{description}}</p>'
                                     + '</div>'
@@ -327,6 +337,13 @@
 
                             alert("error: " + resp.error);
                         } else {
+                            
+                            let totalSumm = 0;
+                            for (item of resp.data) {
+                                totalSumm += item.Summ;
+                                item.Summ = formatter.format(item.Summ);
+                            }                      
+                            resp.totalSumm = formatter.format(totalSumm);
 
                             var template = Hogan.compile(
                                 '<table class="table">'
@@ -359,6 +376,9 @@
                                 + '{{/data}}'
                                 + '</tbody>'
                                 + '</table>'
+                                + '<label><h5>Total: '
+                                + '{{totalSumm}}'
+                                + '</h5></label>'
                             );
                             //Заполняем шаблон данными и помещаем на веб-страницу
                             $('#modal .modal-content').html(template.render(resp));
