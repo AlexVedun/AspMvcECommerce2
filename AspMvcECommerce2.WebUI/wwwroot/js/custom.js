@@ -43,6 +43,28 @@ var onSignOut = function () {
     $("section#admin").html('');
 }
 
+//Получение нового сообщения из WebSocket
+if (!!window.EventSource) {
+    var source = new EventSource('http://localhost:49741/api/subscribe');
+    source.addEventListener('message', function (e) {
+        console.log("message");
+        console.log(e);
+        $("a[href='#!home:out']").click();
+    }, false);
+    source.addEventListener('open', function (e) {
+        console.log("open!");
+    }, false);
+    source.addEventListener('error', function (e) {
+        if (e.readyState == EventSource.CLOSED) {
+            console.log("error!");
+        }
+    }, false);
+} else {
+    // not supported!
+    //fallback to something else
+    console.log('!!window.EventSource is not supported. Fallback to something else');
+}
+
 $(document).ready(function () {
 
     $('.sidenav').sidenav();

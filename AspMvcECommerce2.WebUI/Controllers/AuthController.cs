@@ -107,6 +107,7 @@ namespace AspMvcECommerce2.WebUI.Controllers
         {
             try
             {
+                SubscribeController.SendMessage(HttpContext.Current.Session["username"].ToString());
                 HttpContext.Current.Session["username"] = null;
                 return new ApiResponse<Object>() { data = "logout" };
             }
