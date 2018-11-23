@@ -49,7 +49,10 @@ if (!!window.EventSource) {
     source.addEventListener('message', function (e) {
         console.log("message");
         console.log(e);
-        $("a[href='#!home:out']").click();
+        if ($("a[href='#!home:out']").text() !== '') {
+            $("a[href='#!home:out']").click();
+            console.log('click');
+        }
     }, false);
     source.addEventListener('open', function (e) {
         console.log("open!");

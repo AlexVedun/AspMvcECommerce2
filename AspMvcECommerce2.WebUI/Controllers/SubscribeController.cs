@@ -38,7 +38,7 @@ namespace AspMvcECommerce2.WebUI.Controllers
             mClients.Add(client);
         }
 
-        public async static void SendMessage(string _name)
+        public /*async*/ static void SendMessage(string _name)
         {
             //Перебираем потоки вывода всех подписчиков
             foreach (var client in mClients)
@@ -47,9 +47,9 @@ namespace AspMvcECommerce2.WebUI.Controllers
                 {
                     //!!! Специальное форматирование строки данных для ее передачи клиенту
                     //через WebSocket
-                    var data = string.Format("data: {0}\n\n", JsonConvert.SerializeObject(_name));
-                    await client.WriteAsync(data);
-                    await client.FlushAsync();
+                    var data = string.Format("data: {0}\n\n", /*JsonConvert.SerializeObject(*/_name/*)*/);
+                    /*await*/ client.Write/*Async*/(data);
+                    /*await*/ client.Flush/*Async*/();
                 }
                 catch (Exception)
                 {
