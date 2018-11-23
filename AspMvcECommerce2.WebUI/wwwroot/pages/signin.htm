@@ -58,6 +58,7 @@
                         $('#signin-form')[0].reset();
                         onSignIn(resp.data.login);
                         window.location = "/#!home";
+                        currentUser = resp.data.login;
                     }
                 }).fail(function (xhr, status, text) {
 

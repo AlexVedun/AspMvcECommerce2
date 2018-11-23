@@ -96,7 +96,7 @@
         return function (param) {
 
             if (param === 'out') {
-
+                manualLogout = true;
                 $.ajax({
                     url: "/api/auth/signout"
                     , type: 'POST'
@@ -114,6 +114,7 @@
 
                     alert("error: " + text);
                 });
+                manualLogout = false;
             }
     
             var populateArticlesGrid = function (_filterData) {

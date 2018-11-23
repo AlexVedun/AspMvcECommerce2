@@ -1,5 +1,7 @@
 ﻿var $modal = $('#modal');
 var $cart = $('.cart');
+let currentUser = '';
+let manualLogout = false;
 
 var setModalOk = function () {
 
@@ -49,9 +51,10 @@ if (!!window.EventSource) {
     source.addEventListener('message', function (e) {
         console.log("message");
         console.log(e);
-        if ($("a[href='#!home:out']").text() !== '') {
+        if ($("a[href='#!home:out']").text() !== '' && e.data === currentUser && !manualLogout) {
             $("a[href='#!home:out']").click();
-            console.log('click');
+            currentUser = '';
+            //location.reload();
         }
     }, false);
     source.addEventListener('open', function (e) {
