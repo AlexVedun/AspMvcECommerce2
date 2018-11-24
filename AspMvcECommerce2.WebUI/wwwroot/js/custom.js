@@ -54,7 +54,10 @@ if (!!window.EventSource) {
         if ($("a[href='#!home:out']").text() !== '' && e.data === currentUser && !manualLogout) {
             $("a[href='#!home:out']").click();
             currentUser = '';
-            //location.reload();
+            location.reload();
+        }
+        else {
+            manualLogout = false;
         }
     }, false);
     source.addEventListener('open', function (e) {
